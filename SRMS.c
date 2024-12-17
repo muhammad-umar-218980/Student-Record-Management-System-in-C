@@ -168,7 +168,8 @@ void viewStudent() {
         printf("\n\t\tNo student records available.\n");
         return;
     }
-
+	
+	printf("\n\t\t--------------------------");
     printf("\n\t\tDo you want to:\n");
     printf("\t\t1. View all student records\n");
     printf("\t\t2. View a specific student by roll number\n");
@@ -176,17 +177,40 @@ void viewStudent() {
     scanf("%d", &choice);
 
     if (choice == 1) {
-        printf("\n\t\t--- All Student Records ---\n");
+    	char str[] = "STUDENT RECORDS";
+    	int j = 0 ;
+        printf("\n\n\n\t\t----------------------------- ");
+
+		while(str[j] != '\0'){
+			printf("%c",str[j]);
+			Sleep(100);
+			j++;
+		}
+		
+		printf(" ----------------------------\n");
+        printf("\t\t%-10s%-30s%-15s\n", "Roll No", "Name", "Marks");
+        printf("\t\t--------------------------------------------------------------------------\n");
+
         for (int i = 0; i < studentCount; i++) {
-            printStudent(&students[i]);
+            printf("\t\t%-10d%-30s%-15.2f\n", students[i].rollNo, students[i].name, students[i].marks);
+            if (i != studentCount - 1) {
+                printf("\n");
+            }
         }
-    } else if (choice == 2) {
+        printf("\t\t--------------------------------------------------------------------------\n");
+    } 
+    else if (choice == 2) {
         printf("\n\t\tEnter the roll number of the student: ");
         scanf("%d", &rollNo);
 
         for (int i = 0; i < studentCount; i++) {
             if (students[i].rollNo == rollNo) {
-                printStudent(&students[i]);
+                printf("\n\t\tStudent Details:\n");
+                printf("\t\t%-10s%-30s%-15s\n", "Roll No", "Name", "Marks");
+                printf("\t\t--------------------------------------------------------------------------\n");
+                printf("\t\t%-10d%-30s%-15.2f\n", students[i].rollNo, students[i].name, students[i].marks);
+                printf("\t\t--------------------------------------------------------------------------\n");
+
                 found = 1;
                 break;
             }
@@ -195,10 +219,12 @@ void viewStudent() {
         if (!found) {
             printf("\n\t\tNo student found with roll number %d.\n", rollNo);
         }
-    } else {
+    } 
+    else {
         printf("\n\t\tInvalid choice! Please enter 1 or 2.\n");
     }
 }
+
 
 // <------------------------------------ printStudent() FUNCTION ------------------------------------------>
 
