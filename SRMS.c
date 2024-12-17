@@ -91,7 +91,7 @@ void menu() {
             } else if (choice == 3) {
                 updateStudent();
             } else if (choice == 4) {
-//                deleteStudent();
+                deleteStudent();
             } else if (choice == 5) {
                 printf("Exiting...\n");
             }
@@ -199,6 +199,39 @@ void updateStudent() {
 
             printf("\nRecord updated successfully!\n");
             found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("\nNo student found with roll number %d.\n", rollNo);
+    }
+}
+
+
+// <------------------------------------ deleteStudent() ------------------------------------------>
+void deleteStudent() {
+    if (studentCount == 0) {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    int rollNo;
+    int found = 0;
+
+    printf("\nEnter the roll number of the student to delete: ");
+    scanf("%d", &rollNo);
+
+    for (int i = 0; i < studentCount; i++) {
+        if (students[i].rollNo == rollNo) {
+            found = 1;
+
+            for (int j = i; j < studentCount - 1; j++) {
+                students[j] = students[j + 1];
+            }
+
+            studentCount--; 
+            printf("\nRecord with roll number %d deleted successfully.\n", rollNo);
             break;
         }
     }
