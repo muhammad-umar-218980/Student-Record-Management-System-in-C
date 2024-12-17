@@ -155,7 +155,7 @@ void addStudent() {
     } while (1);
 
     studentCount++;
-    printf("\t\tStudent record added successfully!\n");
+    printf("\n\t\tStudent record added successfully!\n");
 }
 
 
@@ -220,32 +220,42 @@ void updateStudent() {
 
     int rollNo, found = 0;
 
-    printf("\n\t\tEnter the roll number of the student to update: ");
-    scanf("%d", &rollNo);
+    do {
+        printf("\n\t\tEnter the roll number of the student to update: ");
+        if (scanf("%d", &rollNo) != 1) {
+            printf("\t\tInvalid input! Please enter a valid integer roll number.\n");
+            while (getchar() != '\n');  
+            break;  
+        }
+    } while (1);
 
     for (int i = 0; i < studentCount; i++) {
-    if (students[i].rollNo == rollNo) {
-        printf("\n\t\t--- Current Record ---\n");
-        printStudent(&students[i]);
+        if (students[i].rollNo == rollNo) {
+            printf("\n\t\t--- Current Record ---\n");
+            printStudent(&students[i]);
 
-        printf("\n\t\t--- Update Record ---\n");
-        printf("\t\tEnter new name: ");
-        scanf(" %[^\n]", students[i].name);
+            printf("\n\t\t--- Update Record ---\n");
 
-        do {
-            printf("\t\tEnter new marks (0-100): ");
-            scanf("%f", &students[i].marks);
-            if (students[i].marks < 0 || students[i].marks > 100) {
-                printf("\t\tInvalid marks! Please enter a value between 0 and 100.\n");
-            }
-        } while (students[i].marks < 0 || students[i].marks > 100);
+            printf("\t\tEnter new name: ");
+            scanf(" %[^\n]", students[i].name);  
 
-        printf("\n\t\tRecord updated successfully!\n");
-        found = 1;
-        break;
+            do {
+                printf("\t\tEnter new marks (0-100): ");
+                if (scanf("%f", &students[i].marks) != 1) {
+                    printf("\t\tInvalid input! Please enter a valid numeric value for marks.\n");
+                    while (getchar() != '\n');  
+                } else if (students[i].marks < 0 || students[i].marks > 100) {
+                    printf("\t\tMarks must be between 0 and 100.\n");
+                } else {
+                    break;  
+                }
+            } while (1);
+
+            printf("\n\t\tRecord updated successfully!\n");
+            found = 1;
+            break;
+        }
     }
-}
-
 
     if (!found) {
         printf("\n\t\tNo student found with roll number %d.\n", rollNo);
