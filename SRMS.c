@@ -28,7 +28,7 @@ int studentCount = 0;
 
 int main() {
 	
-//	animation();
+	animation();
 	menu();
 	
     return 0;
@@ -52,7 +52,7 @@ void animation() {
 
     for (int i = 0; text[i] != '\0'; i++) {
         printf("%c", text[i]);
-//         Sleep(100);
+         Sleep(100);
     }
 
     
@@ -73,7 +73,7 @@ void menu() {
     do {
         printf("\n--- Student Record Management System ---\n");
         printf("1. Add Student Record\n");
-        printf("2. View All Student Records\n");
+        printf("2. View All Student Records or Specific Student Record\n");
         printf("3. Update Student Record\n");
         printf("4. Delete Student Record\n");
         printf("5. Exit\n");
@@ -89,7 +89,7 @@ void menu() {
             } else if (choice == 2) {
                 viewStudent();
             } else if (choice == 3) {
-//                updateStudent();
+                updateStudent();
             } else if (choice == 4) {
 //                deleteStudent();
             } else if (choice == 5) {
@@ -167,6 +167,44 @@ void viewStudent() {
         }
     } else {
         printf("\nInvalid choice! Please enter 1 or 2.\n");
+    }
+}
+
+
+// <------------------------------------ updateStudent() ------------------------------------------>
+void updateStudent() {
+    if (studentCount == 0) {
+        printf("\nNo student records available.\n");
+        return;
+    }
+
+    int rollNo;
+    int found = 0;
+
+    printf("\nEnter the roll number of the student to update: ");
+    scanf("%d", &rollNo);
+
+    for (int i = 0; i < studentCount; i++) {
+        if (students[i].rollNo == rollNo) {
+            printf("\n--- Current Record ---\n");
+            printf("Roll No: %d\n", students[i].rollNo);
+            printf("Name: %s\n", students[i].name);
+            printf("Marks: %.2f\n", students[i].marks);
+
+            printf("\n--- Update Record ---\n");
+            printf("Enter new name: ");
+            scanf(" %[^\n]", students[i].name); 
+            printf("Enter new marks: ");
+            scanf("%f", &students[i].marks);
+
+            printf("\nRecord updated successfully!\n");
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("\nNo student found with roll number %d.\n", rollNo);
     }
 }
 
