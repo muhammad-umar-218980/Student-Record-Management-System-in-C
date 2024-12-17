@@ -114,40 +114,50 @@ void addStudent() {
 
     printf("\n\t\t--- Add Student Record ---\n");
 
-    // Ye Duplicate Roll no. check karay ga 
     int rollNo;
     int duplicate = 0;
     do {
         printf("\t\tEnter roll number: ");
-        scanf("%d", &rollNo);
-
-        duplicate = 0;
-        for (int i = 0; i < studentCount; i++) {
-            if (students[i].rollNo == rollNo) {
-                printf("\t\tRoll number already exists! Try again with a unique roll number.\n");
-                duplicate = 1;
-                break;
+        if (scanf("%d", &rollNo) != 1) {
+            printf("\t\tInvalid input! Please enter a valid integer roll number.\n\n");
+            while(getchar() != '\n');  // Buffer clear kar dega takay valid roll no enter ho
+            duplicate = 1;
+        } else {
+            duplicate = 0;
+            for (int i = 0; i < studentCount; i++) {
+                if (students[i].rollNo == rollNo) {
+                    printf("\t\tRoll number already exists! Try again with a unique roll number.\n\n");
+                    duplicate = 1;
+                    break;
+                }
             }
         }
     } while (duplicate);
 
     students[studentCount].rollNo = rollNo;
 
+
     printf("\t\tEnter name: ");
     scanf(" %[^\n]", students[studentCount].name); 
 
-    // ye check karay ga marks are between 0 and 100
+
+	// ye check karay ga marks are between 0 and 100
     do {
         printf("\t\tEnter marks (0-100): ");
-        scanf("%f", &students[studentCount].marks);
-        if (students[studentCount].marks < 0 || students[studentCount].marks > 100) {
-            printf("\t\tInvalid marks! Please enter a value between 0 and 100.\n");
+        if (scanf("%f", &students[studentCount].marks) != 1) {
+            printf("\t\tInvalid input! Please enter a valid numeric value for marks.\n");
+            while(getchar() != '\n');  
+        } else if (students[studentCount].marks < 0 || students[studentCount].marks > 100) {
+            printf("\t\tMarks must be between 0 and 100.\n");
+        } else {
+            break;  
         }
-    } while (students[studentCount].marks < 0 || students[studentCount].marks > 100);
+    } while (1);
 
     studentCount++;
     printf("\t\tStudent record added successfully!\n");
 }
+
 
 // <------------------------------------ viewStudent() FUNCTION ------------------------------------------>
 
