@@ -2,39 +2,35 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+// <------------------------------------ STRUCTURE FOR STUDENTS NAME ------------------------------------------>
 typedef struct {
-	int rollNo ;
-	char name[30];
-	float marks;
+    int rollNo;
+    char name[30];
+    float marks;
 } Student;
 
-// <------------------------------ FUNCTION DECLARATIONS ------------------------------->
-
+// <------------------------------------ FUNCTION DECLARATION ------------------------------------------>
 void addStudent();
 void viewStudent();
 void updateStudent();
 void deleteStudent();
 void menu();
+void displayMenu();
+void printStudent(Student* student);
 
+// <------------------------------------ GLOBAL VARS ------------------------------------------>
 
-// <------------------------------ GLOBAL VARS ------------------------------->
-
-Student students[100];
+Student students[100];  
 int studentCount = 0;
 
-
-
-// <------------------------------ main() FUNCTION ------------------------------->
+// <------------------------------------ MAIN FUNCTION ------------------------------------------>
 
 int main() {
-	
-	animation();
-	menu();
-	
+    animation();
+    menu();
     return 0;
 }
-
-// <------------------------------ FUNCTION DEFINITIONS ------------------------------->
 
 // <------------------------------------ ANIMATION ------------------------------------------>
 
@@ -65,161 +61,196 @@ printf("\n\n");
     printf("\n");
 }
 
+// <------------------------------------ DISPLAY MENU FUNCTION ------------------------------------------>
 
-// <------------------------------------ MENU ------------------------------------------>
+void displayMenu() {
+    printf("\n\n\t\t1. Add Student Record\n");
+    printf("\t\t2. View All Student Records or Specific Student Record\n");
+    printf("\t\t3. Update Student Record\n");
+    printf("\t\t4. Delete Student Record\n");
+    printf("\t\t5. Exit\n");
+    printf("\t\tEnter your choice: ");
+}
+
+// <------------------------------------ MENU FUNCTION ------------------------------------------>
 
 void menu() {
     int choice;
     do {
-        printf("\n--- Student Record Management System ---\n");
-        printf("1. Add Student Record\n");
-        printf("2. View All Student Records or Specific Student Record\n");
-        printf("3. Update Student Record\n");
-        printf("4. Delete Student Record\n");
-        printf("5. Exit\n");
-        
-        printf("Enter your choice: ");
+        displayMenu();
         scanf("%d", &choice);
 
-        if (choice < 1 || choice > 5) {
-            printf("Invalid choice! Please try again.\n");
-        } else {
-            if (choice == 1) {
+        switch (choice) {
+            case 1:
                 addStudent();
-            } else if (choice == 2) {
+                break;
+            case 2:
                 viewStudent();
-            } else if (choice == 3) {
+                break;
+            case 3:
                 updateStudent();
-            } else if (choice == 4) {
+                break;
+            case 4:
                 deleteStudent();
-            } else if (choice == 5) {
-                printf("Exiting...\n");
-            }
+                break;
+            case 5:
+                printf("\t\tExiting...\n");
+                break;
+            default:
+                printf("\t\tInvalid choice! Please try again.\n");
         }
     } while (choice != 5);
 }
 
-// <------------------------------------ addStudent() ------------------------------------------>
+// <------------------------------------ addStudent() FUNCTION ------------------------------------------>
 
 void addStudent() {
-    if (studentCount < 100) {
-        printf("\n--- Add Student Record ---\n");
-        
-        printf("Enter roll number: ");
-        scanf("%d", &students[studentCount].rollNo);
-        
-        printf("Enter name: ");
-        scanf(" %[^\n]", students[studentCount].name); 
-        
-        printf("Enter marks: ");
-        scanf("%f", &students[studentCount].marks);
-        
-        studentCount++;
-        printf("Student record added successfully!\n");
-    } else {
-        printf("Maximum student limit reached. Cannot add more records.\n");
-    }
-}
-
-
-// <------------------------------------ viewStudent() ------------------------------------------>
-void viewStudent() {
-    int choice;
-    int rollNo;
-    int found = 0;
-
-    if (studentCount == 0) {
-        printf("\nNo student records available.\n");
+    if (studentCount >= 100) {
+        printf("\t\tMaximum student limit reached. Cannot add more records.\n");
         return;
     }
 
-    printf("\nDo you want to:\n");
-    printf("1. View all student records\n");
-    printf("2. View a specific student by roll number\n");
-    printf("Enter your choice (1 or 2): ");
+    printf("\n\t\t--- Add Student Record ---\n");
+
+    // Ye Duplicate Roll no. check karay ga 
+    int rollNo;
+    int duplicate = 0;
+    do {
+        printf("\t\tEnter roll number: ");
+        scanf("%d", &rollNo);
+
+        duplicate = 0;
+        for (int i = 0; i < studentCount; i++) {
+            if (students[i].rollNo == rollNo) {
+                printf("\t\tRoll number already exists! Try again with a unique roll number.\n");
+                duplicate = 1;
+                break;
+            }
+        }
+    } while (duplicate);
+
+    students[studentCount].rollNo = rollNo;
+
+    printf("\t\tEnter name: ");
+    scanf(" %[^\n]", students[studentCount].name); 
+
+    // ye check karay ga marks are between 0 and 100
+    do {
+        printf("\t\tEnter marks (0-100): ");
+        scanf("%f", &students[studentCount].marks);
+        if (students[studentCount].marks < 0 || students[studentCount].marks > 100) {
+            printf("\t\tInvalid marks! Please enter a value between 0 and 100.\n");
+        }
+    } while (students[studentCount].marks < 0 || students[studentCount].marks > 100);
+
+    studentCount++;
+    printf("\t\tStudent record added successfully!\n");
+}
+
+// <------------------------------------ viewStudent() FUNCTION ------------------------------------------>
+
+void viewStudent() {
+    int choice, rollNo, found = 0;
+
+    if (studentCount == 0) {
+        printf("\n\t\tNo student records available.\n");
+        return;
+    }
+
+    printf("\n\t\tDo you want to:\n");
+    printf("\t\t1. View all student records\n");
+    printf("\t\t2. View a specific student by roll number\n");
+    printf("\t\tEnter your choice (1 or 2): ");
     scanf("%d", &choice);
 
     if (choice == 1) {
-        printf("\n--- All Student Records ---\n");
+        printf("\n\t\t--- All Student Records ---\n");
         for (int i = 0; i < studentCount; i++) {
-            printf("Roll No: %d\n", students[i].rollNo);
-            printf("Name: %s\n", students[i].name);
-            printf("Marks: %.2f\n", students[i].marks);
-            printf("----------------------\n");
+            printStudent(&students[i]);
         }
     } else if (choice == 2) {
-        printf("\nEnter the roll number of the student: ");
+        printf("\n\t\tEnter the roll number of the student: ");
         scanf("%d", &rollNo);
 
         for (int i = 0; i < studentCount; i++) {
             if (students[i].rollNo == rollNo) {
-                printf("\n--- Student Record ---\n");
-                printf("Roll No: %d\n", students[i].rollNo);
-                printf("Name: %s\n", students[i].name);
-                printf("Marks: %.2f\n", students[i].marks);
+                printStudent(&students[i]);
                 found = 1;
                 break;
             }
         }
 
         if (!found) {
-            printf("\nNo student found with roll number %d.\n", rollNo);
+            printf("\n\t\tNo student found with roll number %d.\n", rollNo);
         }
     } else {
-        printf("\nInvalid choice! Please enter 1 or 2.\n");
+        printf("\n\t\tInvalid choice! Please enter 1 or 2.\n");
     }
 }
 
+// <------------------------------------ printStudent() FUNCTION ------------------------------------------>
 
-// <------------------------------------ updateStudent() ------------------------------------------>
+void printStudent(Student* student) {
+    printf("\t\tRoll No: %d\n", (*student).rollNo);
+    printf("\t\tName: %s\n", (*student).name);
+    printf("\t\tMarks: %.2f\n", (*student).marks);
+    printf("\t\t----------------------\n");
+}
+
+
+// <------------------------------------ updateStudent() FUNCTION ------------------------------------------>
+
 void updateStudent() {
     if (studentCount == 0) {
-        printf("\nNo student records available.\n");
+        printf("\n\t\tNo student records available.\n");
         return;
     }
 
-    int rollNo;
-    int found = 0;
+    int rollNo, found = 0;
 
-    printf("\nEnter the roll number of the student to update: ");
+    printf("\n\t\tEnter the roll number of the student to update: ");
     scanf("%d", &rollNo);
 
     for (int i = 0; i < studentCount; i++) {
-        if (students[i].rollNo == rollNo) {
-            printf("\n--- Current Record ---\n");
-            printf("Roll No: %d\n", students[i].rollNo);
-            printf("Name: %s\n", students[i].name);
-            printf("Marks: %.2f\n", students[i].marks);
+    if (students[i].rollNo == rollNo) {
+        printf("\n\t\t--- Current Record ---\n");
+        printStudent(&students[i]);
 
-            printf("\n--- Update Record ---\n");
-            printf("Enter new name: ");
-            scanf(" %[^\n]", students[i].name); 
-            printf("Enter new marks: ");
+        printf("\n\t\t--- Update Record ---\n");
+        printf("\t\tEnter new name: ");
+        scanf(" %[^\n]", students[i].name);
+
+        do {
+            printf("\t\tEnter new marks (0-100): ");
             scanf("%f", &students[i].marks);
+            if (students[i].marks < 0 || students[i].marks > 100) {
+                printf("\t\tInvalid marks! Please enter a value between 0 and 100.\n");
+            }
+        } while (students[i].marks < 0 || students[i].marks > 100);
 
-            printf("\nRecord updated successfully!\n");
-            found = 1;
-            break;
-        }
-    }
-
-    if (!found) {
-        printf("\nNo student found with roll number %d.\n", rollNo);
+        printf("\n\t\tRecord updated successfully!\n");
+        found = 1;
+        break;
     }
 }
 
 
-// <------------------------------------ deleteStudent() ------------------------------------------>
+    if (!found) {
+        printf("\n\t\tNo student found with roll number %d.\n", rollNo);
+    }
+}
+
+// <------------------------------------ deleteStudent() FUNCTION ------------------------------------------>
+
 void deleteStudent() {
     if (studentCount == 0) {
-        printf("\nNo student records available.\n");
+        printf("\n\t\tNo student records available.\n");
         return;
     }
 
-    int rollNo;
-    int found = 0;
+    int rollNo, found = 0;
 
-    printf("\nEnter the roll number of the student to delete: ");
+    printf("\n\t\tEnter the roll number of the student to delete: ");
     scanf("%d", &rollNo);
 
     for (int i = 0; i < studentCount; i++) {
@@ -231,13 +262,12 @@ void deleteStudent() {
             }
 
             studentCount--; 
-            printf("\nRecord with roll number %d deleted successfully.\n", rollNo);
+            printf("\n\t\tRecord with roll number %d deleted successfully.\n", rollNo);
             break;
         }
     }
 
     if (!found) {
-        printf("\nNo student found with roll number %d.\n", rollNo);
+        printf("\n\t\tNo student found with roll number %d.\n", rollNo);
     }
 }
-
