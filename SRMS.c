@@ -16,6 +16,16 @@ void updateStudent();
 void deleteStudent();
 void menu();
 
+
+// <------------------------------ GLOBAL VARS ------------------------------->
+
+Student students[100];
+int studentCount = 0;
+
+
+
+// <------------------------------ main() FUNCTION ------------------------------->
+
 int main() {
 	
 	animation();
@@ -77,14 +87,37 @@ void menu() {
             if (choice == 1) {
                 addStudent();
             } else if (choice == 2) {
-                viewStudents();
+//                viewStudents();
             } else if (choice == 3) {
-                updateStudent();
+//                updateStudent();
             } else if (choice == 4) {
-                deleteStudent();
+//                deleteStudent();
             } else if (choice == 5) {
                 printf("Exiting...\n");
             }
         }
     } while (choice != 5);
 }
+
+// <------------------------------------ addStudent() ------------------------------------------>
+
+void addStudent() {
+    if (studentCount < 100) {
+        printf("\n--- Add Student Record ---\n");
+        
+        printf("Enter roll number: ");
+        scanf("%d", &students[studentCount].rollNo);
+        
+        printf("Enter name: ");
+        scanf(" %[^\n]", students[studentCount].name); 
+        
+        printf("Enter marks: ");
+        scanf("%f", &students[studentCount].marks);
+        
+        studentCount++;
+        printf("Student record added successfully!\n");
+    } else {
+        printf("Maximum student limit reached. Cannot add more records.\n");
+    }
+}
+
