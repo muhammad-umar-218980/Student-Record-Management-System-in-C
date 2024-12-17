@@ -64,12 +64,14 @@ printf("\n\n");
 // <------------------------------------ DISPLAY MENU FUNCTION ------------------------------------------>
 
 void displayMenu() {
-    printf("\n\n\t\t1. Add Student Record\n");
+	printf("\n\t\t--------------------------\n");
+    printf("\t\t1. Add Student Record\n");
     printf("\t\t2. View All Student Records or Specific Student Record\n");
     printf("\t\t3. Update Student Record\n");
     printf("\t\t4. Delete Student Record\n");
     printf("\t\t5. Exit\n");
     printf("\t\tEnter your choice: ");
+    printf("\n\t\t--------------------------\n");
 }
 
 // <------------------------------------ MENU FUNCTION ------------------------------------------>
