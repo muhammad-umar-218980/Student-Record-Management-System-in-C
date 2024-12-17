@@ -52,7 +52,7 @@ void animation() {
     }
 
     
-printf("\n\n");
+	printf("\n\n");
 
     printf("          ");
     for (int i = 0; i < length + 30; i++) {
@@ -71,7 +71,6 @@ void displayMenu() {
     printf("\t\t4. Delete Student Record\n");
     printf("\t\t5. Exit\n");
     printf("\t\tEnter your choice: ");
-    printf("\n\t\t--------------------------\n");
 }
 
 // <------------------------------------ MENU FUNCTION ------------------------------------------>
@@ -81,6 +80,7 @@ void menu() {
     do {
         displayMenu();
         scanf("%d", &choice);
+	    printf("\t\t--------------------------\n");
 
         switch (choice) {
             case 1:
