@@ -17,7 +17,6 @@ void updateStudent();
 void deleteStudent();
 void menu();
 void displayMenu();
-void printStudent(Student* student);
 
 // <------------------------------------ GLOBAL VARS ------------------------------------------>
 
@@ -226,14 +225,6 @@ void viewStudent() {
 }
 
 
-// <------------------------------------ printStudent() FUNCTION ------------------------------------------>
-
-void printStudent(Student* student) {
-    printf("\t\tRoll No: %d\n", (*student).rollNo);
-    printf("\t\tName: %s\n", (*student).name);
-    printf("\t\tMarks: %.2f\n", (*student).marks);
-    printf("\t\t----------------------\n");
-}
 
 
 // <------------------------------------ updateStudent() FUNCTION ------------------------------------------>
@@ -270,11 +261,11 @@ void updateStudent() {
                 printf("\t\tEnter new marks (0-100): ");
                 if (scanf("%f", &students[i].marks) != 1) {
                     printf("\t\tInvalid input! Please enter a valid numeric value for marks.\n");
-                    while (getchar() != '\n'); // Clear input buffer
+                    while (getchar() != '\n'); 
                 } else if (students[i].marks < 0 || students[i].marks > 100) {
                     printf("\t\tMarks must be between 0 and 100.\n");
                 } else {
-                    break; // Valid input
+                    break; 
                 }
             } while (1);
 
