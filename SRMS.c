@@ -244,49 +244,48 @@ void updateStudent() {
         return;
     }
 
-    int rollNo, found = 0;
+    int rollNo;
 
-    do {
+    printf("\n\t\tEnter the roll number of the student to update: ");
+    while (scanf("%d", &rollNo) != 1) {
+        printf("\t\tInvalid input! Please enter a valid integer roll number.\n");
+        while (getchar() != '\n'); // input buffer clear karega 
         printf("\n\t\tEnter the roll number of the student to update: ");
-        if (scanf("%d", &rollNo) != 1) {
-            printf("\t\tInvalid input! Please enter a valid integer roll number.\n");
-            while (getchar() != '\n');  
-            break;  
-        }
-    } while (1);
+    }
 
     for (int i = 0; i < studentCount; i++) {
         if (students[i].rollNo == rollNo) {
-            printf("\n\t\t--- Current Record ---\n");
-            printStudent(&students[i]);
+            printf("\n\t\t------------------------ CURRENT RECORD OF STUDENT ----------------------\n");
+            printf("\t\t%-10s%-30s%-15s\n", "Roll No", "Name", "Marks");
+            printf("\t\t--------------------------------------------------------------------------\n");
+            printf("\t\t%-10d%-30s%-15.2f\n", students[i].rollNo, students[i].name, students[i].marks);
+            printf("\t\t--------------------------------------------------------------------------\n");
 
             printf("\n\t\t--- Update Record ---\n");
 
             printf("\t\tEnter new name: ");
-            scanf(" %[^\n]", students[i].name);  
+            scanf(" %[^\n]", students[i].name);
 
             do {
                 printf("\t\tEnter new marks (0-100): ");
                 if (scanf("%f", &students[i].marks) != 1) {
                     printf("\t\tInvalid input! Please enter a valid numeric value for marks.\n");
-                    while (getchar() != '\n');  
+                    while (getchar() != '\n'); // Clear input buffer
                 } else if (students[i].marks < 0 || students[i].marks > 100) {
                     printf("\t\tMarks must be between 0 and 100.\n");
                 } else {
-                    break;  
+                    break; // Valid input
                 }
             } while (1);
 
             printf("\n\t\tRecord updated successfully!\n");
-            found = 1;
-            break;
+            return;
         }
     }
 
-    if (!found) {
-        printf("\n\t\tNo student found with roll number %d.\n", rollNo);
-    }
+    printf("\n\t\tNo student found with roll number %d.\n", rollNo);
 }
+
 
 // <------------------------------------ deleteStudent() FUNCTION ------------------------------------------>
 
